@@ -1,6 +1,6 @@
 'use client';
 
-import type { LeagueSeasonBadge } from '@/api/leagues';
+import type { LeagueSeasonBadge } from '@/api/badges';
 
 type BadgeProps = {
   badge: LeagueSeasonBadge | null | undefined;
