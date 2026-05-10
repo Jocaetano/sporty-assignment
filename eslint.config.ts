@@ -1,28 +1,28 @@
-import { defineConfig, globalIgnores } from 'eslint/config';
+import { globalIgnores } from 'eslint/config';
+import {
+  defineConfigWithVueTs,
+  vueTsConfigs,
+} from '@vue/eslint-config-typescript';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import unusedImports from 'eslint-plugin-unused-imports';
-import eslintConfigPrettier from 'eslint-config-prettier/flat';
-import js from '@eslint/js';
-import globals from 'globals';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
-import tseslint from 'typescript-eslint';
+import pluginVue from 'eslint-plugin-vue';
+import pluginOxlint from 'eslint-plugin-oxlint';
+import skipFormatting from 'eslint-config-prettier/flat';
 
-const eslintConfig = defineConfig([
+const eslintConfig = defineConfigWithVueTs(
   {
-    files: ['**/*.{ts,tsx}'],
+    name: 'app/files-to-lint',
+    files: ['**/*.{vue,ts,mts}'],
+  },
 
-    extends: [
-      js.configs.recommended,
-      tseslint.configs.recommended,
-      reactHooks.configs.flat.recommended,
-      reactRefresh.configs.vite,
-    ],
+  globalIgnores(['dist']),
 
-    languageOptions: {
-      globals: globals.browser,
-    },
+  ...pluginVue.configs['flat/essential'],
+  vueTsConfigs.recommended,
 
+  ...pluginOxlint.buildFromOxlintConfigFile('.oxlintrc.json'),
+
+  {
     plugins: {
       'simple-import-sort': simpleImportSort,
       'unused-imports': unusedImports,
@@ -31,15 +31,6 @@ const eslintConfig = defineConfig([
     rules: {
       'no-unused-vars': 'off',
       'no-console': 'warn',
-
-      // 'react/display-name': 'off',
-      // 'react/jsx-curly-brace-presence': [
-      //   'warn',
-      //   {
-      //     props: 'never',
-      //     children: 'never',
-      //   },
-      // ],
 
       '@typescript-eslint/no-unused-expressions': [
         'error',
@@ -90,7 +81,7 @@ const eslintConfig = defineConfig([
     },
   },
 
-  globalIgnores(['dist']),
-]);
+  skipFormatting
+);
 
 export default eslintConfig;

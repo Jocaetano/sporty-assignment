@@ -1,0 +1,15 @@
+import { PiniaColada } from '@pinia/colada';
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
+
+import './globals.css';
+import 'primeicons/primeicons.css';
+
+import App from './App.vue';
+
+const app = createApp(App);
+
+app.use(createPinia());
+app.use(PiniaColada);
+
+app.mount('#root');

@@ -1,36 +1,39 @@
-'use client';
-
-import { useState } from 'react';
-import useSWRMutation from 'swr/mutation';
+import { useMutation } from '@pinia/colada';
+import { ref } from 'vue';
 
 import { fetchLeagueBadge, type LeagueSeasonBadge } from '@/api/badges';
 import type { LeagueId } from '@/api/leagues';
 
 export const useLeagueBadge = (leagueId: LeagueId) => {
   const srwFetchLeagueBadge = () => fetchLeagueBadge(leagueId);
-  const [cache, setCache] = useState<LeagueSeasonBadge | null>(null);
+  const cache = ref<LeagueSeasonBadge | null>(null);
 
-  const { trigger, data, error, isMutating } = useSWRMutation(
-    `${leagueId}-badge`,
-    srwFetchLeagueBadge,
-    {
-      revalidate: false,
-      populateCache: true,
-    }
-  );
+  const {
+    mutateAsync: trigger,
+    data,
+    error,
+    isLoading,
+  } = useMutation({
+    key: [`${leagueId}-badge`],
+    mutation: srwFetchLeagueBadge,
+    // {
+    //   revalidate: false,
+    //   populateCache: true,
+    // }
+  });
 
   const invalidateCache = () => {
-    setCache(null);
+    cache.value = null;
   };
 
   const triggerFetchBadge = async () => {
-    if (cache || isMutating) {
+    if (cache.value || isLoading.value) {
       return;
     }
 
     const badge = await trigger();
 
-    setCache(badge);
+    cache.value = badge;
     setTimeout(invalidateCache, 1000 * 60); // 1 minute
   };
 
@@ -38,6 +41,6 @@ export const useLeagueBadge = (leagueId: LeagueId) => {
     triggerFetchBadge,
     data,
     error,
-    isMutating,
+    isMutating: isLoading,
   };
 };
