@@ -1,13 +1,13 @@
-import { globalIgnores } from 'eslint/config';
 import {
   defineConfigWithVueTs,
   vueTsConfigs,
 } from '@vue/eslint-config-typescript';
+import { globalIgnores } from 'eslint/config';
+import skipFormatting from 'eslint-config-prettier/flat';
+import pluginOxlint from 'eslint-plugin-oxlint';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import unusedImports from 'eslint-plugin-unused-imports';
 import pluginVue from 'eslint-plugin-vue';
-import pluginOxlint from 'eslint-plugin-oxlint';
-import skipFormatting from 'eslint-config-prettier/flat';
 
 const eslintConfig = defineConfigWithVueTs(
   {

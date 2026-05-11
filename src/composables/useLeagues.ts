@@ -1,20 +1,15 @@
-import { useQuery } from '@pinia/colada';
-import { computed } from 'vue';
+import useSWRV from 'swrv';
 
 import { fetchAllLeagues, leaguesEndpoint } from '@/api/leagues';
 
 export const useLeagues = () => {
-  const { data, error, isLoading, isPending } = useQuery({
-    key: [leaguesEndpoint],
-    query: fetchAllLeagues,
-
-    // options:{
-    //   suspense: true,
-    //   focusThrottleInterval: 60 * 1000, // 1 minute
-    // }
-  });
-
-  const isValidating = computed(() => !isPending.value && isLoading.value);
+  const { data, error, isLoading, isValidating } = useSWRV(
+    leaguesEndpoint,
+    fetchAllLeagues,
+    {
+      dedupingInterval: 60 * 1000, // 1 minute
+    }
+  );
 
   return {
     data,

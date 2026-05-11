@@ -16,10 +16,6 @@ export const useLeagueBadge = (leagueId: LeagueId) => {
   } = useMutation({
     key: [`${leagueId}-badge`],
     mutation: srwFetchLeagueBadge,
-    // {
-    //   revalidate: false,
-    //   populateCache: true,
-    // }
   });
 
   const invalidateCache = () => {
