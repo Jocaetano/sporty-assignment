@@ -35,3 +35,7 @@ Optionally, you can use the `npm run build` command to create a production build
 The UI was mostly build by v0, with this single prompt: "All logic is done, I just need a new UI. Use tailwind, radix-ui or shadcn."
 The AI did not modify any logic, but added some new components that were not needed, which I removed. The league card component became
 too large with all styles, so I split it and created the Badge component. Some skeletons components were also added by the AI.
+
+## Extra
+
+There is also a Vue implementation of this project, it lives in the `feat/vue-migration` branch.
